@@ -3,7 +3,6 @@ package main
 import (
 	"errors"
 	"net/http"
-    
 	"github.com/gin-gonic/gin"
 )
 
@@ -57,10 +56,34 @@ func createCar(c *gin.Context){
 	cars=append(cars,newCar)
 	c.IndentedJSON(http.StatusCreated,newCar)
 }
+func deleteById(c *gin.Context){
+	id,ok:=c.GetQuery("id")
+    var scar []car
+	
+	if ok{
+		scar=DeleteCarById(id)
+	}else{
+       c.IndentedJSON(http.StatusBadRequest,gin.H{"message":"missing parametr"})
+	   return
+	}
 
+	c.IndentedJSON(http.StatusOK,scar)
+}
+func DeleteCarById(id string) []car{
+	var newcars []car
+
+	for _,item:=range cars{
+       if item.ID !=id{
+		   newcars=append(newcars, item)
+	   }
+	}
+	cars=newcars
+	return cars
+}
 
 func main(){
 	router:=gin.Default()
+	router.DELETE("/delete",deleteById)
 	router.POST("/cars",createCar)
 	router.GET("/cars/:id",carById)
 	router.GET("/cars",getCars)
