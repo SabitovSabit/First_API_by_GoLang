@@ -2,7 +2,9 @@ package main
 
 import (
 	"errors"
+	"firstApi/database"
 	"net/http"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -77,16 +79,18 @@ func DeleteCarById(id string) []car{
 		   newcars=append(newcars, item)
 	   }
 	}
-	cars=newcars
+    cars=newcars
 	return cars
 }
 
 func main(){
-	router:=gin.Default()
-	router.DELETE("/delete",deleteById)
-	router.POST("/cars",createCar)
-	router.GET("/cars/:id",carById)
-	router.GET("/cars",getCars)
-	router.Run("localhost:8080")
+	// router:=gin.Default()
+	// router.DELETE("/delete",deleteById)
+	// router.POST("/cars",createCar)
+	// router.GET("/cars/:id",carById)
+	// router.GET("/cars",getCars)
+	// router.Run("localhost:8080")
+
+	database.Main()
 }
 
